@@ -12,8 +12,8 @@
 
 bool Node::s_bResourcesReady = false;
 
-Node::Node(std::string name, std::string objName, float fX, float fY, float fZ, bool bIsRoot, float fRotX, float fRotY, float fRotZ, bool bCamEnabled)
-	: m_name(name), m_gameObjectName(objName), m_bCamEnabled(bCamEnabled), m_bIsRoot(bIsRoot)
+Node::Node(std::string name, std::string objName, float fX, float fY, float fZ, bool bIsRoot, float fRotX, float fRotY, float fRotZ, bool bCamEnabled, bool bYFacingCam)
+	: m_name(name), m_gameObjectName(objName), m_bCamEnabled(bCamEnabled), m_bIsRoot(bIsRoot), m_bYFacingCam(bYFacingCam)
 {
 	m_mWorldMatrix = XMMatrixIdentity();
 	m_mCamWorldMatrix = XMMatrixIdentity();
@@ -28,8 +28,8 @@ Node::Node(std::string name, std::string objName, float fX, float fY, float fZ, 
 	m_vForwardVector = XMVectorZero();
 }
 
-Node::Node(std::string name, std::string objName, XMFLOAT4 mPos, bool bIsRoot, XMFLOAT4 mRot, bool bCamEnabled)
-	: m_name(name), m_gameObjectName(objName), m_bCamEnabled(bCamEnabled), m_bIsRoot(bIsRoot)
+Node::Node(std::string name, std::string objName, XMFLOAT4 mPos, bool bIsRoot, XMFLOAT4 mRot, bool bCamEnabled, bool bYFacingCam)
+	: m_name(name), m_gameObjectName(objName), m_bCamEnabled(bCamEnabled), m_bIsRoot(bIsRoot), m_bYFacingCam(bYFacingCam)
 {
 	m_mWorldMatrix = XMMatrixIdentity();
 	m_mCamWorldMatrix = XMMatrixIdentity();
@@ -76,25 +76,14 @@ void Node::UpdateMatrices(void)
 	}
 	else
 	{
-		m_mWorldMatrix = mRotX * mRotZ * mRotY * mTrans * m_pParent->m_mWorldMatrix;
+		m_mWorldMatrix = mRotX * mRotY * mRotZ * mTrans * m_pParent->m_mWorldMatrix;
 	}
 
 	m_vForwardVector = m_mWorldMatrix.r[2];
 
 	if (m_bCamEnabled)
 	{
-		XMMATRIX mPlaneCameraRot = mRotY * mTrans;
-
-		mRotX = XMMatrixRotationX(m_v4LocalCamRotation.x);
-		mRotY = XMMatrixRotationY(m_v4LocalCamRotation.y);
-		mRotZ = XMMatrixRotationZ(m_v4LocalCamRotation.z);
-		mTrans = XMMatrixTranslationFromVector(XMLoadFloat4(&m_v4LocalCamOffset));
-
-		m_mCamWorldMatrix = mRotY * mTrans * mPlaneCameraRot;
-
-		// Get the camera's world position (m_vCamWorldPos) out of m_mCameraWorldMatrix
-
-		m_vCamWorldPos = m_mCamWorldMatrix.r[3];
+		this->UpdateCameraPosition(mRotX, mRotY, mRotZ, mTrans);
 	}
 
 	for (Node* child : m_children)
@@ -147,4 +136,30 @@ void Node::Draw(void)
 	{
 		child->Draw();
 	}
+}
+
+void Node::UpdateCameraPosition(XMMATRIX &mRotX, XMMATRIX &mRotY, XMMATRIX &mRotZ, XMMATRIX &mTrans)
+{
+	XMMATRIX mYCameraRot = mRotY * mTrans;
+
+	mRotX = XMMatrixRotationX(XMConvertToRadians(m_v4LocalCamRotation.x));
+	mRotY = XMMatrixRotationY(XMConvertToRadians(m_v4LocalCamRotation.y));
+	mRotZ = XMMatrixRotationZ(XMConvertToRadians(m_v4LocalCamRotation.z));
+	mTrans = XMMatrixTranslationFromVector(XMLoadFloat4(&m_v4LocalCamOffset));
+
+	if (m_bYFacingCam)
+	{
+		m_mCamWorldMatrix = mRotY * mTrans * mYCameraRot;
+	}
+	else if(!m_pParent && m_mCamNodeFocus)
+	{
+		m_mCamWorldMatrix = mRotX * mRotY * mRotZ * mTrans * m_mCamNodeFocus->m_mWorldMatrix;
+	}
+	else
+	{
+		m_mCamWorldMatrix = mRotX * mRotY * mRotZ * mTrans * m_mWorldMatrix;
+	}
+	// Get the camera's world position (m_vCamWorldPos) out of m_mCameraWorldMatrix
+
+	m_vCamWorldPos = m_mCamWorldMatrix.r[3];
 }

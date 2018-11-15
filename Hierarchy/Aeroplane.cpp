@@ -11,7 +11,7 @@
 
 // Initialise static class variables.
 
-Aeroplane::Aeroplane(std::string name, std::string objName, float fX, float fY, float fZ, bool bIsRoot, float fRotX, float fRotY, float fRotZ, bool mCamEnabled) : Node(name, objName, fX, fY, fZ, bIsRoot, fRotX, fRotY, fRotZ, mCamEnabled)
+Aeroplane::Aeroplane(std::string name, std::string objName, float fX, float fY, float fZ, bool bIsRoot, float fRotX, float fRotY, float fRotZ, bool mCamEnabled, bool bYFacingCam) : Node(name, objName, fX, fY, fZ, bIsRoot, fRotX, fRotY, fRotZ, mCamEnabled, bYFacingCam)
 {
 	m_fSpeed = 0.0f;
 }
@@ -112,5 +112,4 @@ void Aeroplane::SetUpHierarchy(void)
 	this->AddChild(m_pProp);
 	this->AddChild(m_pTurret);
 	m_pTurret->AddChild(m_pGun);
-
 }
