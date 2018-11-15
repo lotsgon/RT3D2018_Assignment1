@@ -21,7 +21,8 @@ bool Application::HandleStart()
 	m_bWireframe = false;
 
 	m_pHeightMap = new HeightMap("Resources/heightmap.bmp", 2.0f);
-	m_pAeroplane = new Aeroplane(0.0f, 3.5f, 0.0f, 105.0f);
+	m_pAeroplane = new Aeroplane("Aeroplane", "Aeroplane", 0.0f, 3.5f, 0.0f, 0.0f, 105.0f, 0.0f, true);
+	m_pAeroplane->SetUpHierarchy();
 
 	m_pAeroplane->LoadResources();
 
@@ -44,7 +45,7 @@ bool Application::HandleStart()
 void Application::HandleStop()
 {
 	delete m_pHeightMap;
-	Aeroplane::ReleaseResources();
+	m_pAeroplane->ReleaseResources();
 	delete m_pAeroplane;
 
 	this->CommonApp::HandleStop();

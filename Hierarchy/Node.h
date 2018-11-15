@@ -15,8 +15,11 @@
 __declspec(align(16)) class Node
 {
 public:
-	Node(std::string name);
-	Node(std::string name, float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f, float fRotX = 0.0f, float fRotY = 0.0f, float fRotZ = 0.0f);
+	Node(std::string name = "Node", std::string objName = "Other", bool bCamEnabled = false)
+		:m_name(name), m_bCamEnabled(bCamEnabled)
+	{};
+	Node(std::string name = "Node", std::string objName = "Other", float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f, float fRotX = 0.0f, float fRotY = 0.0f, float fRotZ = 0.0f, bool bCamEnabled = false);
+	Node(std::string name = "Node", std::string objName = "Other", XMFLOAT4 mPos = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f) , XMFLOAT4 mRot = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f), bool bCamEnabled = false);
 	~Node(void);
 
 	void LoadResources(void); // Only load the resources once for all instances
@@ -27,7 +30,7 @@ public:
 	void SetWorldPosition(float fX, float fY, float fZ);
 	void AddChild(Node* pChild); // Add a child to this node
 
-private:
+protected:
 	void UpdateMatrices(void);
 
 	CommonMesh* m_pNodeMesh; // Only one mesh for all instances
@@ -35,6 +38,7 @@ private:
 	static bool s_bResourcesReady;
 
 	std::string m_name;
+	std::string m_gameObjectName;
 
 	XMFLOAT4 m_v4LocalRotation; // Euler rotation angles
 	XMFLOAT4 m_v4LocalPosition; // Local position
@@ -51,9 +55,9 @@ private:
 	XMVECTOR m_vCamWorldPos; // World position
 	XMMATRIX m_mCamWorldMatrix; // Camera's world transformation matrix
 
-	bool m_bCam;
+	bool m_bCamEnabled;
 
-	Node* m_pParent;
+	Node* m_pParent = nullptr;
 
 	std::vector<Node*> m_children;
 
@@ -61,21 +65,32 @@ public:
 	float GetXPosition(void) { return m_v4LocalPosition.x; }
 	float GetYPosition(void) { return m_v4LocalPosition.y; }
 	float GetZPosition(void) { return m_v4LocalPosition.z; }
+	float GetXRotation(void) { return m_v4LocalRotation.x; }
+	float GetYRotation(void) { return m_v4LocalRotation.y; }
+	float GetZRotation(void) { return m_v4LocalRotation.z; }
 	std::string GetName(void) { return m_name; }
-	XMFLOAT4 GetFocusPosition(void) { return GetPosition(); }
+	std::string GetGameObjectName(void) { return m_gameObjectName; }
+	XMFLOAT4 GetFocusPosition(void) { return GetLocalPosition(); }
 	XMFLOAT4 GetCameraPosition(void)
 	{
 		XMFLOAT4 v4Pos;
 		XMStoreFloat4(&v4Pos, m_vCamWorldPos);
 		return v4Pos;
 	}
-	XMFLOAT4 GetPosition(void) { return m_v4LocalPosition; }
-	void SetCamera(bool value) { m_bCam = value; }
+	XMFLOAT4 GetLocalPosition(void) { return m_v4LocalPosition; }
+	XMFLOAT4 GetLocalRotation(void) { return m_v4LocalRotation; }
+	XMVECTOR GetForwardVector(void) { return m_vForwardVector; }
+	void SetName(std::string name) { m_name = name; }
+	void SetGameObjectName(std::string name) { m_gameObjectName = name; }
+	void SetCamera(bool value) { m_bCamEnabled = value; }
 	void SetParent(Node* pParent) { m_pParent = pParent; }
 	void SetLocalPosition(XMFLOAT4 mPos) { m_v4LocalPosition = mPos; };
 	void SetLocalPosition(float fX, float fY, float fZ) { m_v4LocalPosition = XMFLOAT4(fX, fY, fZ, 0.0f); };
 	void SetLocalRotation(XMFLOAT4 mRot) { m_v4LocalRotation = mRot; };
 	void SetLocalRotation(float fX, float fY, float fZ) { m_v4LocalRotation = XMFLOAT4(fX, fY, fZ, 0.0f); };
+	void UpdateXRotation(float f) { m_v4LocalRotation.x += f; }
+	void UpdateYRotation(float f) { m_v4LocalRotation.y += f; }
+	void UpdateZRotation(float f) { m_v4LocalRotation.z += f; }
 
 	void* operator new(size_t i)
 	{
