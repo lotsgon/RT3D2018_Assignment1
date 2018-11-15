@@ -12,8 +12,8 @@
 
 bool Node::s_bResourcesReady = false;
 
-Node::Node(std::string name, std::string objName, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ, bool bCamEnabled)
-	: m_name(name), m_gameObjectName(objName)
+Node::Node(std::string name, std::string objName, float fX, float fY, float fZ, bool bIsRoot, float fRotX, float fRotY, float fRotZ, bool bCamEnabled)
+	: m_name(name), m_gameObjectName(objName), m_bCamEnabled(bCamEnabled), m_bIsRoot(bIsRoot)
 {
 	m_mWorldMatrix = XMMatrixIdentity();
 	m_mCamWorldMatrix = XMMatrixIdentity();
@@ -26,12 +26,10 @@ Node::Node(std::string name, std::string objName, float fX, float fY, float fZ, 
 
 	m_vCamWorldPos = XMVectorZero();
 	m_vForwardVector = XMVectorZero();
-
-	m_bCamEnabled = bCamEnabled;
 }
 
-Node::Node(std::string name, std::string objName, XMFLOAT4 mPos, XMFLOAT4 mRot, bool bCamEnabled)
-	: m_name(name), m_gameObjectName(objName)
+Node::Node(std::string name, std::string objName, XMFLOAT4 mPos, bool bIsRoot, XMFLOAT4 mRot, bool bCamEnabled)
+	: m_name(name), m_gameObjectName(objName), m_bCamEnabled(bCamEnabled), m_bIsRoot(bIsRoot)
 {
 	m_mWorldMatrix = XMMatrixIdentity();
 	m_mCamWorldMatrix = XMMatrixIdentity();
@@ -44,8 +42,6 @@ Node::Node(std::string name, std::string objName, XMFLOAT4 mPos, XMFLOAT4 mRot, 
 
 	m_vCamWorldPos = XMVectorZero();
 	m_vForwardVector = XMVectorZero();
-
-	m_bCamEnabled = bCamEnabled;
 }
 
 
@@ -114,11 +110,14 @@ void Node::Update()
 
 void Node::LoadResources(void)
 {
-	std::string fileName;
+	if (!m_bIsRoot)
+	{
+		std::string fileName;
 
-	fileName = "Resources/" + m_gameObjectName + "/" + m_name + ".x";
+		fileName = "Resources/" + m_gameObjectName + "/" + m_name + ".x";
 
-	m_pNodeMesh = CommonMesh::LoadFromXFile(Application::s_pApp, fileName.c_str());
+		m_pNodeMesh = CommonMesh::LoadFromXFile(Application::s_pApp, fileName.c_str());
+	}
 
 	for (Node* child : m_children)
 	{
@@ -138,8 +137,11 @@ void Node::ReleaseResources(void)
 
 void Node::Draw(void)
 {
-	Application::s_pApp->SetWorldMatrix(m_mWorldMatrix);
-	m_pNodeMesh->Draw();
+	if (!m_bIsRoot)
+	{
+		Application::s_pApp->SetWorldMatrix(m_mWorldMatrix);
+		m_pNodeMesh->Draw();
+	}
 
 	for (Node* child : m_children)
 	{

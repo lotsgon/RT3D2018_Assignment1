@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Heightmap.h"
 #include "Aeroplane.h"
+#include "Robot.h"
 
 Application* Application::s_pApp = NULL;
 
@@ -21,10 +22,15 @@ bool Application::HandleStart()
 	m_bWireframe = false;
 
 	m_pHeightMap = new HeightMap("Resources/heightmap.bmp", 2.0f);
-	m_pAeroplane = new Aeroplane("Aeroplane", "Aeroplane", 0.0f, 3.5f, 0.0f, 0.0f, 105.0f, 0.0f, true);
+
+	m_pAeroplane = new Aeroplane("Aeroplane", "Aeroplane", 0.0f, 3.5f, 0.0f, false, 0.0f, 105.0f, 0.0f, true);
 	m_pAeroplane->SetUpHierarchy();
+	
+	m_pRobot = new Robot("Robot", "Robot", 0.1027778f, 7.5644722f, 0.0f, true);
+	m_pRobot->SetUpHierarchy();
 
 	m_pAeroplane->LoadResources();
+	m_pRobot->LoadResources();
 
 	m_cameraZ = 50.0f;
 	m_rotationAngle = 0.f;
@@ -100,6 +106,7 @@ void Application::HandleUpdate()
 	}
 
 	m_pAeroplane->Update(m_cameraState != CAMERA_MAP);
+	m_pRobot->Update();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -149,6 +156,7 @@ void Application::HandleRender()
 
 	m_pHeightMap->Draw();
 	m_pAeroplane->Draw();
+	m_pRobot->Draw();
 }
 
 //////////////////////////////////////////////////////////////////////

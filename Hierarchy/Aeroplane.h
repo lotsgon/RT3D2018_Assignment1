@@ -15,7 +15,7 @@
 __declspec(align(16)) class Aeroplane : public Node
 {
   public:
-	Aeroplane(std::string name = "Aeroplane", std::string objName = "Other", float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f, float fRotX = 0.0f, float fRotY = 0.0f, float fRotZ = 0.0f, bool bCamEnabled = false);
+	Aeroplane(std::string name = "Aeroplane", std::string objName = "Aeroplane", float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f, bool bIsRoot = false, float fRotX = 0.0f, float fRotY = 0.0f, float fRotZ = 0.0f, bool bCamEnabled = false);
 	~Aeroplane(void);
 
 	void Update(bool bPlayerControl); // Player only has control of plane when flag is set

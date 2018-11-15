@@ -11,7 +11,7 @@
 
 // Initialise static class variables.
 
-Aeroplane::Aeroplane(std::string name, std::string objName, float fX, float fY, float fZ, float fRotX, float fRotY, float fRotZ, bool mCamEnabled) : Node(name, objName, fX, fY, fZ, fRotX, fRotY, fRotZ, mCamEnabled)
+Aeroplane::Aeroplane(std::string name, std::string objName, float fX, float fY, float fZ, bool bIsRoot, float fRotX, float fRotY, float fRotZ, bool mCamEnabled) : Node(name, objName, fX, fY, fZ, bIsRoot, fRotX, fRotY, fRotZ, mCamEnabled)
 {
 	m_fSpeed = 0.0f;
 }
@@ -22,7 +22,6 @@ Aeroplane::~Aeroplane(void)
 
 void Aeroplane::Update(bool bPlayerControl)
 {
-	// DON'T DO THIS UNTIL YOu HAVE COMPLETED THE FUNCTION ABOVE
 	if (bPlayerControl)
 	{
 		// Step 1: Make the plane pitch upwards when you press "Q" and return to level when released

@@ -13,6 +13,7 @@
 #include "CommonMesh.h"
 
 class Aeroplane;
+class Robot;
 class HeightMap;
 
 //////////////////////////////////////////////////////////////////////
@@ -37,6 +38,7 @@ class Application : public CommonApp
 	int m_cameraState;
 
 	Aeroplane* m_pAeroplane;
+	Robot* m_pRobot;
 	HeightMap* m_pHeightMap;
 };
 

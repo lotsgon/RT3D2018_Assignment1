@@ -15,11 +15,11 @@
 __declspec(align(16)) class Node
 {
 public:
-	Node(std::string name = "Node", std::string objName = "Other", bool bCamEnabled = false)
+	Node(std::string name = "Node", std::string objName = "Other", bool bIsRoot = false, bool bCamEnabled = false)
 		:m_name(name), m_bCamEnabled(bCamEnabled)
 	{};
-	Node(std::string name = "Node", std::string objName = "Other", float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f, float fRotX = 0.0f, float fRotY = 0.0f, float fRotZ = 0.0f, bool bCamEnabled = false);
-	Node(std::string name = "Node", std::string objName = "Other", XMFLOAT4 mPos = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f) , XMFLOAT4 mRot = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f), bool bCamEnabled = false);
+	Node(std::string name = "Node", std::string objName = "Other", float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f, bool bIsRoot = false, float fRotX = 0.0f, float fRotY = 0.0f, float fRotZ = 0.0f, bool bCamEnabled = false);
+	Node(std::string name = "Node", std::string objName = "Other", XMFLOAT4 mPos = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f), bool bIsRoot = false, XMFLOAT4 mRot = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f), bool bCamEnabled = false);
 	~Node(void);
 
 	void LoadResources(void); // Only load the resources once for all instances
@@ -56,6 +56,7 @@ protected:
 	XMMATRIX m_mCamWorldMatrix; // Camera's world transformation matrix
 
 	bool m_bCamEnabled;
+	bool m_bIsRoot;
 
 	Node* m_pParent = nullptr;
 
