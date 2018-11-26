@@ -26,7 +26,7 @@ bool Application::HandleStart()
 
 	m_pAeroplane = new Aeroplane("Aeroplane", "Aeroplane", 0.0f, 3.5f, 0.0f, false, 0.0f, 105.0f, 0.0f, true, true);
 	m_pAeroplane->SetUpHierarchy();
-	
+
 	m_pRobot = new Robot("Robot", "Robot", 0.1027778f, 7.5644722f, 0.0f, true);
 	m_pRobot->SetUpHierarchy();
 
@@ -34,9 +34,9 @@ bool Application::HandleStart()
 	m_pRobot->LoadResources();
 
 	m_cameraZ = 50.0f;
-	m_rotationAngle = 0.f;
+	m_rotationAngle = 0.0f;
 
-	if(!this->CommonApp::HandleStart())
+	if (!this->CommonApp::HandleStart())
 		return false;
 
 	this->SetRasterizerState(false, m_bWireframe);
@@ -54,6 +54,8 @@ void Application::HandleStop()
 	delete m_pHeightMap;
 	m_pAeroplane->ReleaseResources();
 	delete m_pAeroplane;
+	m_pRobot->ReleaseResources();
+	delete m_pRobot;
 
 	this->CommonApp::HandleStop();
 }
@@ -65,22 +67,22 @@ void Application::HandleUpdate()
 {
 	m_rotationAngle += .01f;
 
-	if(m_cameraState == CAMERA_MAP)
+	if (m_cameraState == CAMERA_MAP)
 	{
-		if(this->IsKeyPressed('Q'))
+		if (this->IsKeyPressed('Q'))
 			m_cameraZ -= 2.0f;
 
-		if(this->IsKeyPressed('A'))
+		if (this->IsKeyPressed('A'))
 			m_cameraZ += 2.0f;
 	}
 
 	static bool dbC = false;
 
-	if(this->IsKeyPressed('C'))
+	if (this->IsKeyPressed('C'))
 	{
-		if(!dbC)
+		if (!dbC)
 		{
-			if(++m_cameraState == CAMERA_MAX)
+			if (++m_cameraState == CAMERA_MAX)
 				m_cameraState = CAMERA_MAP;
 
 			dbC = true;
@@ -92,9 +94,9 @@ void Application::HandleUpdate()
 	}
 
 	static bool dbW = false;
-	if(this->IsKeyPressed('W'))
+	if (this->IsKeyPressed('W'))
 	{
-		if(!dbW)
+		if (!dbW)
 		{
 			m_bWireframe = !m_bWireframe;
 			this->SetRasterizerState(false, m_bWireframe);
@@ -118,29 +120,29 @@ void Application::HandleRender()
 	XMFLOAT3 vUpVector(0.0f, 1.0f, 0.0f);
 	XMFLOAT3 vCamera, vLookat;
 
-	switch(m_cameraState)
+	switch (m_cameraState)
 	{
-		case CAMERA_MAP:
-			vCamera = XMFLOAT3(sin(m_rotationAngle) * m_cameraZ, m_cameraZ / 4, cos(m_rotationAngle) * m_cameraZ);
-			vLookat = XMFLOAT3(0.0f, 4.0f, 0.0f);
-			break;
-		case CAMERA_PLANE:
-			m_pAeroplane->SetGunCamera(false);
-			m_pAeroplane->SetYFacingCamera(true);
-			vCamera = XMFLOAT3(m_pAeroplane->GetCameraPosition().x, m_pAeroplane->GetCameraPosition().y, m_pAeroplane->GetCameraPosition().z);
-			vLookat = XMFLOAT3(m_pAeroplane->GetFocusPosition().x, m_pAeroplane->GetFocusPosition().y, m_pAeroplane->GetFocusPosition().z);
-			break;
-		case CAMERA_GUN:
-			m_pAeroplane->SetGunCamera(true);
-			m_pAeroplane->SetYFacingCamera(false);
-			vCamera = XMFLOAT3(m_pAeroplane->GetCameraPosition().x, m_pAeroplane->GetCameraPosition().y, m_pAeroplane->GetCameraPosition().z);
-			vLookat = XMFLOAT3(m_pAeroplane->GetFocusPosition().x, m_pAeroplane->GetFocusPosition().y, m_pAeroplane->GetFocusPosition().z);
-			break;
-		case CAMERA_ROBOT:
-			m_pRobot->SetCameraEnabled(true);
-			vCamera = XMFLOAT3(m_pRobot->GetCameraPosition().x, m_pRobot->GetCameraPosition().y, m_pRobot->GetCameraPosition().z);
-			vLookat = XMFLOAT3(m_pRobot->GetFocusPosition().x, m_pRobot->GetFocusPosition().y, m_pRobot->GetFocusPosition().z);
-			break;
+	case CAMERA_MAP:
+		vCamera = XMFLOAT3(sin(m_rotationAngle) * m_cameraZ, m_cameraZ / 4, cos(m_rotationAngle) * m_cameraZ);
+		vLookat = XMFLOAT3(0.0f, 4.0f, 0.0f);
+		break;
+	case CAMERA_PLANE:
+		m_pAeroplane->SetGunCamera(false);
+		m_pAeroplane->SetYFacingCamera(true);
+		vCamera = XMFLOAT3(m_pAeroplane->GetCameraPosition().x, m_pAeroplane->GetCameraPosition().y, m_pAeroplane->GetCameraPosition().z);
+		vLookat = XMFLOAT3(m_pAeroplane->GetFocusPosition().x, m_pAeroplane->GetFocusPosition().y, m_pAeroplane->GetFocusPosition().z);
+		break;
+	case CAMERA_GUN:
+		m_pAeroplane->SetGunCamera(true);
+		m_pAeroplane->SetYFacingCamera(false);
+		vCamera = XMFLOAT3(m_pAeroplane->GetCameraPosition().x, m_pAeroplane->GetCameraPosition().y, m_pAeroplane->GetCameraPosition().z);
+		vLookat = XMFLOAT3(m_pAeroplane->GetFocusPosition().x, m_pAeroplane->GetFocusPosition().y, m_pAeroplane->GetFocusPosition().z);
+		break;
+	case CAMERA_ROBOT:
+		m_pRobot->SetCameraEnabled(true);
+		vCamera = XMFLOAT3(m_pRobot->GetCameraPosition().x, m_pRobot->GetCameraPosition().y, m_pRobot->GetCameraPosition().z);
+		vLookat = XMFLOAT3(m_pRobot->GetFocusPosition().x, m_pRobot->GetFocusPosition().y, m_pRobot->GetFocusPosition().z);
+		break;
 	}
 
 	XMMATRIX matView;

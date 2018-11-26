@@ -12,6 +12,8 @@
 
 #include "Node.h"
 
+class Bullet;
+
 __declspec(align(16)) class Aeroplane : public Node
 {
   public:
@@ -21,6 +23,9 @@ __declspec(align(16)) class Aeroplane : public Node
 	void Update(bool bPlayerControl); // Player only has control of plane when flag is set
 	void SetUpHierarchy(void);
 
+	void Draw(void);
+	void ReleaseResources(void);
+
   private:
 
 	float m_fSpeed; // Forward speed
@@ -28,6 +33,7 @@ __declspec(align(16)) class Aeroplane : public Node
 	Node* m_pProp;
 	Node* m_pTurret;
 	Node* m_pGun;
+	std::vector< Bullet* > m_pBullets;
 
 	XMFLOAT4 m_v4CamRot; // Local rotation angles
 	XMFLOAT4 m_v4CamOff; // Local offset
@@ -46,6 +52,10 @@ __declspec(align(16)) class Aeroplane : public Node
 			  this->SetCameraNodeFocus(nullptr);
 		  }
 	  }
+
+	  XMMATRIX GetGunWorldMatrix(void) { return m_pGun->GetWorldMatrix(); }
+	  XMVECTOR GetGunForwardVector(void) { return m_pGun->GetForwardVector(); }
+	  float GetSpeed(void) { return m_fSpeed; }
 
 	void* operator new(size_t i)
 	{

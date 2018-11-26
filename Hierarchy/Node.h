@@ -84,6 +84,7 @@ public:
 	XMFLOAT4 GetLocalPosition(void) { return m_v4LocalPosition; }
 	XMFLOAT4 GetLocalRotation(void) { return m_v4LocalRotation; }
 	XMVECTOR GetForwardVector(void) { return m_vForwardVector; }
+	XMMATRIX GetWorldMatrix(void) { return m_mWorldMatrix; }
 	void SetName(std::string name) { m_name = name; }
 	void SetGameObjectName(std::string name) { m_gameObjectName = name; }
 	void SetCameraEnabled(bool value) { m_bCamEnabled = value; }

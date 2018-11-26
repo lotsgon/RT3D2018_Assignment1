@@ -116,7 +116,10 @@ void Node::LoadResources(void)
 
 void Node::ReleaseResources(void)
 {
-	delete m_pNodeMesh;
+	if (!m_bIsRoot)
+	{
+		delete m_pNodeMesh;
+	}
 
 	for (Node* child : m_children)
 	{
