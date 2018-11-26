@@ -63,20 +63,21 @@ void Node::AddChild(Node* pChild)
 
 void Node::UpdateMatrices(void)
 {
-	XMMATRIX mRotX, mRotY, mRotZ, mTrans;
+	XMMATRIX mRotX, mRotY, mRotZ, mTrans, mScale;
 
 	mRotX = XMMatrixRotationX(XMConvertToRadians(m_v4LocalRotation.x));
 	mRotY = XMMatrixRotationY(XMConvertToRadians(m_v4LocalRotation.y));
 	mRotZ = XMMatrixRotationZ(XMConvertToRadians(m_v4LocalRotation.z));
 	mTrans = XMMatrixTranslationFromVector(XMLoadFloat4(&m_v4LocalPosition));
+	mScale = XMMatrixScalingFromVector(XMLoadFloat4(&m_v4LocalScale));
 
 	if (!m_pParent)
 	{
-		m_mWorldMatrix = mRotX * mRotZ * mRotY * mTrans;
+		m_mWorldMatrix = mRotX * mRotZ * mRotY * mScale * mTrans;
 	}
 	else
 	{
-		m_mWorldMatrix = mRotX * mRotY * mRotZ * mTrans * m_pParent->m_mWorldMatrix;
+		m_mWorldMatrix = mRotX * mRotY * mRotZ * mScale * mTrans * m_pParent->m_mWorldMatrix;
 	}
 
 	m_vForwardVector = m_mWorldMatrix.r[2];

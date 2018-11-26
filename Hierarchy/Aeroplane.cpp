@@ -84,16 +84,16 @@ void Aeroplane::Update(bool bPlayerControl)
 
 		if (Application::s_pApp->IsKeyPressed(' '))
 		{
-			XMFLOAT4 v4Pos;
 			Bullet* pBull;
 
 			pBull = new Bullet("Bullet", "Bullet");
 
 			m_pBullets.push_back(pBull);
 
-			XMStoreFloat4(&v4Pos, m_mWorldMatrix.r[4]);
-			pBull->SetLocalRotation(m_pTurret->GetLocalRotation());
 			pBull->InitializeBulletPosition(m_pGun->GetWorldMatrix());
+			pBull->SetLocalScale(0.1f, 0.1f, 0.1f);
+			pBull->SetLocalRotation(m_pTurret->GetLocalRotation());
+			pBull->UpdateYRotation(105.0f);
 			pBull->LoadResources();
 		}
 
@@ -124,7 +124,7 @@ void Aeroplane::Update(bool bPlayerControl)
 			continue;
 		}
 
-		m_pBullets[i]->Update(m_pGun->GetForwardVector(), m_fSpeed);
+ 		m_pBullets[i]->Update(m_pGun->GetForwardVector(), 10);
 	}
 
 	// Move Forward

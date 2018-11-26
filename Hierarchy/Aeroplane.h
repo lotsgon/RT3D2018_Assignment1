@@ -16,8 +16,8 @@ class Bullet;
 
 __declspec(align(16)) class Aeroplane : public Node
 {
-  public:
-	  Aeroplane(std::string name = "Aeroplane", std::string objName = "Aeroplane", float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f, bool bIsRoot = false, float fRotX = 0.0f, float fRotY = 0.0f, float fRotZ = 0.0f, bool bCamEnabled = false, bool bYFacingCam = false);
+public:
+	Aeroplane(std::string name = "Aeroplane", std::string objName = "Aeroplane", float fX = 0.0f, float fY = 0.0f, float fZ = 0.0f, bool bIsRoot = false, float fRotX = 0.0f, float fRotY = 0.0f, float fRotZ = 0.0f, bool bCamEnabled = false, bool bYFacingCam = false);
 	~Aeroplane(void);
 
 	void Update(bool bPlayerControl); // Player only has control of plane when flag is set
@@ -26,7 +26,7 @@ __declspec(align(16)) class Aeroplane : public Node
 	void Draw(void);
 	void ReleaseResources(void);
 
-  private:
+private:
 
 	float m_fSpeed; // Forward speed
 
@@ -41,21 +41,21 @@ __declspec(align(16)) class Aeroplane : public Node
 	XMVECTOR m_vCamWorldPos; // World position
 	XMMATRIX m_mCamWorldMatrix; // Camera's world transformation matrix
 
-  public:
-	  void SetGunCamera(bool value) {
-		  if (value)
-		  {
-			  this->SetCameraNodeFocus(m_pGun);
-		  }
-		  else
-		  {
-			  this->SetCameraNodeFocus(nullptr);
-		  }
-	  }
+public:
+	void SetGunCamera(bool value) {
+		if (value)
+		{
+			this->SetCameraNodeFocus(m_pGun);
+		}
+		else
+		{
+			this->SetCameraNodeFocus(nullptr);
+		}
+	}
 
-	  XMMATRIX GetGunWorldMatrix(void) { return m_pGun->GetWorldMatrix(); }
-	  XMVECTOR GetGunForwardVector(void) { return m_pGun->GetForwardVector(); }
-	  float GetSpeed(void) { return m_fSpeed; }
+	XMMATRIX GetGunWorldMatrix(void) { return m_pGun->GetWorldMatrix(); }
+	XMVECTOR GetGunForwardVector(void) { return m_pGun->GetForwardVector(); }
+	float GetSpeed(void) { return m_fSpeed; }
 
 	void* operator new(size_t i)
 	{
