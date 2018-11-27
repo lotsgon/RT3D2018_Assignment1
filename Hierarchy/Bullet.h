@@ -19,7 +19,7 @@ public:
 	Bullet(std::string name = "Bullet", std::string objName = "Bullet", XMFLOAT4 mPos = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f), bool bIsRoot = false, XMFLOAT4 mRot = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f), bool bCamEnabled = false);
 	~Bullet(void);
 
-	void InitializeBulletPosition(XMMATRIX mGunWorldMatrix);
+	void InitializeBulletPosition(XMMATRIX mGunWorldMatrix, XMFLOAT4 offset);
 
 	void Update(XMVECTOR mGunForwardVector, float fSpeed);
 

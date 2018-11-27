@@ -19,17 +19,19 @@ Bullet::~Bullet(void)
 {
 }
 
-void Bullet::InitializeBulletPosition(XMMATRIX mGunWorldMatrix)
+void Bullet::InitializeBulletPosition(XMMATRIX mGunWorldMatrix, XMFLOAT4 offset)
 {
 	XMMATRIX mRotX, mRotY, mRotZ, mTrans, mScale;
 
 	mRotX = XMMatrixRotationX(XMConvertToRadians(m_v4LocalRotation.x));
 	mRotY = XMMatrixRotationY(XMConvertToRadians(m_v4LocalRotation.y));
-	mRotZ = XMMatrixRotationZ(XMConvertToRadians(m_v4LocalRotation.z));
-	mTrans = XMMatrixTranslationFromVector(XMLoadFloat4(&m_v4LocalPosition));
+	mRotZ = XMMatrixRotationZ(XMConvertToRadians(m_v4LocalRotation.z));;
+	mTrans = XMMatrixTranslationFromVector(XMLoadFloat4(&offset)) * XMMatrixTranslationFromVector(XMLoadFloat4(&m_v4LocalPosition));
 	mScale = XMMatrixScalingFromVector(XMLoadFloat4(&m_v4LocalScale));
 
 	m_mWorldMatrix = mRotX * mRotY * mRotZ  * mScale * mTrans * mGunWorldMatrix;
+
+
 
 	m_vForwardVector = m_mWorldMatrix.r[2];
 
@@ -45,7 +47,7 @@ void Bullet::Update(XMVECTOR mGunForwardVector, float fScale)
 
 	// Move Forward
 	XMVECTOR vCurrPos = XMLoadFloat4(&m_v4LocalPosition);
-	vCurrPos += m_vForwardVector * 10.0f;
+	vCurrPos += m_vForwardVector * fScale;
 	XMStoreFloat4(&m_v4LocalPosition, vCurrPos);
 
 }
