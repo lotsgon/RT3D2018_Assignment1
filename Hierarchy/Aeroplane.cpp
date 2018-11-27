@@ -8,6 +8,8 @@
 //*********************************************************************************************
 
 #include "Aeroplane.h"
+#include "Bullet.h"
+
 
 // Initialise static class variables.
 
@@ -80,6 +82,21 @@ void Aeroplane::Update(bool bPlayerControl)
 			this->UpdateZRotation(1.0f);
 		}
 
+		if (Application::s_pApp->IsKeyPressed(' '))
+		{
+			Bullet* pBull;
+
+			pBull = new Bullet("Bullet", "Bullet");
+
+			m_pBullets.push_back(pBull);
+
+			pBull->InitializeBulletPosition(m_pGun->GetWorldMatrix(), XMFLOAT4(0.0f,0.2f,0.8f,0.0f));
+			pBull->SetLocalScale(0.1f, 0.1f, 0.1f);
+			pBull->SetLocalRotation(m_pTurret->GetLocalRotation());
+			pBull->UpdateYRotation(105.0f);
+			pBull->LoadResources();
+		}
+
 	} // End of if player control
 
 	// Apply a forward thrust and limit to a maximum speed of 1
@@ -97,6 +114,19 @@ void Aeroplane::Update(bool bPlayerControl)
 
 	Node::Update();
 
+	for (int i = 0; i < m_pBullets.size(); i++)
+	{
+		if (m_pBullets[i]->GetActiveTime() > 600)
+		{
+			m_pBullets[i]->ReleaseResources();
+			m_pBullets.erase(m_pBullets.begin() + i);
+
+			continue;
+		}
+
+ 		m_pBullets[i]->Update(m_pGun->GetForwardVector(), 10.0f);
+	}
+
 	// Move Forward
 	XMVECTOR vCurrPos = XMLoadFloat4(&m_v4LocalPosition);
 	vCurrPos += m_vForwardVector * m_fSpeed;
@@ -112,4 +142,24 @@ void Aeroplane::SetUpHierarchy(void)
 	this->AddChild(m_pProp);
 	this->AddChild(m_pTurret);
 	m_pTurret->AddChild(m_pGun);
+}
+
+void Aeroplane::Draw(void)
+{
+	Node::Draw();
+
+	for (Bullet* pBull : m_pBullets)
+	{
+		pBull->Draw();
+	}
+}
+
+void Aeroplane::ReleaseResources(void)
+{
+	Node::ReleaseResources();
+
+	for (Bullet* pBull : m_pBullets)
+	{
+		pBull->ReleaseResources();
+	}
 }

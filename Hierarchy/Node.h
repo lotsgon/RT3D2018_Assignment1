@@ -43,7 +43,7 @@ protected:
 
 	XMFLOAT4 m_v4LocalRotation; // Euler rotation angles
 	XMFLOAT4 m_v4LocalPosition; // Local position
-	XMFLOAT4 m_v4LocalScale; // Local scale
+	XMFLOAT4 m_v4LocalScale = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f); // Local scale
 
 	XMVECTOR m_vForwardVector; // Forward Vector for Node
 
@@ -84,6 +84,7 @@ public:
 	XMFLOAT4 GetLocalPosition(void) { return m_v4LocalPosition; }
 	XMFLOAT4 GetLocalRotation(void) { return m_v4LocalRotation; }
 	XMVECTOR GetForwardVector(void) { return m_vForwardVector; }
+	XMMATRIX GetWorldMatrix(void) { return m_mWorldMatrix; }
 	void SetName(std::string name) { m_name = name; }
 	void SetGameObjectName(std::string name) { m_gameObjectName = name; }
 	void SetCameraEnabled(bool value) { m_bCamEnabled = value; }
@@ -94,6 +95,8 @@ public:
 	void SetLocalPosition(float fX, float fY, float fZ) { m_v4LocalPosition = XMFLOAT4(fX, fY, fZ, 0.0f); };
 	void SetLocalRotation(XMFLOAT4 mRot) { m_v4LocalRotation = mRot; };
 	void SetLocalRotation(float fX, float fY, float fZ) { m_v4LocalRotation = XMFLOAT4(fX, fY, fZ, 0.0f); };
+	void SetLocalScale(XMFLOAT4 mScale) { m_v4LocalScale = mScale; };
+	void SetLocalScale(float fX, float fY, float fZ) { m_v4LocalScale = XMFLOAT4(fX, fY, fZ, 0.0f); };
 	void UpdateXRotation(float f) { m_v4LocalRotation.x += f; }
 	void UpdateYRotation(float f) { m_v4LocalRotation.y += f; }
 	void UpdateZRotation(float f) { m_v4LocalRotation.z += f; }
