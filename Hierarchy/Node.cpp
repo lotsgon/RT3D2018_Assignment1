@@ -95,6 +95,11 @@ void Node::UpdateMatrices(void)
 
 void Node::Update()
 {
+	for (Node* child : m_children)
+	{
+		child->m_vAnimations[m_fCurrentAnimation].Update();
+	}
+
 	UpdateMatrices();
 }
 

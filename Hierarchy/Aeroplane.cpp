@@ -90,7 +90,7 @@ void Aeroplane::Update(bool bPlayerControl)
 
 			m_pBullets.push_back(pBull);
 
-			pBull->InitializeBulletPosition(m_pGun->GetWorldMatrix(), XMFLOAT4(0.0f,0.2f,0.8f,0.0f));
+			pBull->InitializeBulletPosition(m_pGun->GetWorldMatrix(), XMFLOAT4(0.0f,0.2f,1.5f,0.0f));
 			pBull->SetLocalScale(0.1f, 0.1f, 0.1f);
 			pBull->SetLocalRotation(m_pTurret->GetLocalRotation());
 			pBull->UpdateYRotation(105.0f);

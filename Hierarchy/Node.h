@@ -11,6 +11,7 @@
 //*********************************************************************************************
 
 #include "Application.h"
+#include "Animation.h"
 
 __declspec(align(16)) class Node
 {
@@ -44,6 +45,9 @@ protected:
 	XMFLOAT4 m_v4LocalRotation; // Euler rotation angles
 	XMFLOAT4 m_v4LocalPosition; // Local position
 	XMFLOAT4 m_v4LocalScale = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f); // Local scale
+
+	std::vector<Animation> m_vAnimations;
+	float m_fCurrentAnimation;
 
 	XMVECTOR m_vForwardVector; // Forward Vector for Node
 
