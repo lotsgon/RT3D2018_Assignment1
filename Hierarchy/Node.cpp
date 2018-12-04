@@ -95,9 +95,20 @@ void Node::UpdateMatrices(void)
 
 void Node::Update()
 {
+	if (m_vAnimations.size() != 0)
+	{
+		if (m_fCurrentAnimation < 0)
+		{
+			m_fCurrentAnimation = 0;
+		}
+
+		this->m_vAnimations[m_fCurrentAnimation].Update();
+		this->SetLocalRotation(m_vAnimations[m_fCurrentAnimation].GetLocalRotation());
+	}
+
 	for (Node* child : m_children)
 	{
-		child->m_vAnimations[m_fCurrentAnimation].Update();
+		child->Update();
 	}
 
 	UpdateMatrices();
@@ -160,7 +171,7 @@ void Node::UpdateCameraPosition(XMMATRIX &mRotX, XMMATRIX &mRotY, XMMATRIX &mRot
 	{
 		m_mCamWorldMatrix = mRotY * mTrans * mYCameraRot;
 	}
-	else if(!m_pParent && m_mCamNodeFocus)
+	else if (!m_pParent && m_mCamNodeFocus)
 	{
 		m_mCamWorldMatrix = mRotX * mRotY * mRotZ * mTrans * m_mCamNodeFocus->m_mWorldMatrix;
 	}

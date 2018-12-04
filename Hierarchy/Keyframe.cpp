@@ -15,13 +15,13 @@ void Keyframe::InterpolateTranslation(float mTime)
 {
 }
 
-void Keyframe::InterpolateRotation(float mTime, Keyframe mNextKeyframe)
+void Keyframe::InterpolateRotation(float mTime, Keyframe mNextKeyframe, XMFLOAT4* mAnimationRotation)
 {
-	XMVECTOR startRot, endRot, slerp;
+	XMVECTOR startRot, endRot, slerp, lerp;
 	startRot = XMLoadFloat4(&m_v4LocalRotation);
 	endRot = XMLoadFloat4(&mNextKeyframe.m_v4LocalRotation);
 
-	slerp = XMQuaternionSlerpV(startRot, endRot, XMLoadFloat(&mTime));
+	slerp = XMQuaternionSlerp(startRot, endRot, mTime);
 
-	XMStoreFloat4(&m_v4LocalRotation, slerp);
+	XMStoreFloat4(mAnimationRotation, slerp);
 }

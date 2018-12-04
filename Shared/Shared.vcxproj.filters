@@ -6,6 +6,7 @@
     <ClCompile Include="D3DHelpers.cpp" />
     <ClCompile Include="CommonMesh.cpp" />
     <ClCompile Include="CommonFont.cpp" />
+    <ClCompile Include="..\tinyxml2\tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -13,5 +14,7 @@
     <ClInclude Include="D3DHelpers.h" />
     <ClInclude Include="CommonMesh.h" />
     <ClInclude Include="CommonFont.h" />
+    <ClInclude Include="..\tinyxml2\tinyxml2.h" />
+    <ClInclude Include="StringUtils.h" />
   </ItemGroup>
 </Project>

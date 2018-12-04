@@ -16,12 +16,11 @@ private:
 
 public:
 
-	XMFLOAT4 m_v4LocalRotation; // Euler rotation angles
-	XMFLOAT4 m_v4LocalPosition; // Local position
+	XMFLOAT4 m_v4LocalRotation = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f); // Euler rotation angles
+	XMFLOAT4 m_v4LocalPosition = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f); // Local position
 	float m_KeyframeTime;
 
-	void InterpolateRotation(float mTime, Keyframe mNextKeyframe);
-
+	void InterpolateRotation(float mTime, Keyframe mNextKeyframe, XMFLOAT4* mAnimationRotation);
 
 };
 
