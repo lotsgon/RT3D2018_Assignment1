@@ -108,6 +108,33 @@ void Application::HandleUpdate()
 		dbW = false;
 	}
 
+	if (this->IsKeyPressed('1'))
+	{
+		m_pRobot->SetCurrentAnimation(0);
+	}
+	else if (this->IsKeyPressed('2'))
+	{
+		m_pRobot->SetCurrentAnimation(1);
+	}
+	else if (this->IsKeyPressed('3'))
+	{
+		m_pRobot->SetCurrentAnimation(2);
+	}
+
+	static bool dbF = false;
+	if (this->IsKeyPressed('F'))
+	{
+		if (!dbF)
+		{
+			m_pRobot->SetDebugAnimation(!dbF);
+			dbF = true;
+		}
+	}
+	else
+	{
+		dbF = false;
+	}
+
 	m_pAeroplane->Update(m_cameraState != CAMERA_MAP);
 	m_pRobot->Update();
 }

@@ -87,9 +87,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aeroplane.cpp" />
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="AnimationLoader.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="HeightMap.cpp" />
+    <ClCompile Include="Keyframe.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Robot.cpp" />
   </ItemGroup>
@@ -100,9 +103,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aeroplane.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="AnimationLoader.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="HeightMap.h" />
+    <ClInclude Include="Keyframe.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Robot.h" />
   </ItemGroup>

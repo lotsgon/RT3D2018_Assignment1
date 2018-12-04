@@ -11,6 +11,7 @@
 //*********************************************************************************************
 
 #include "Node.h"
+#include "AnimationLoader.h"
 
 __declspec(align(16)) class Robot : public Node
 {

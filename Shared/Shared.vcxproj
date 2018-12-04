@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="CommonApp.cpp" />
     <ClCompile Include="CommonFont.cpp" />
@@ -18,11 +19,13 @@
     <ClCompile Include="D3DHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\tinyxml2\tinyxml2.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="CommonApp.h" />
     <ClInclude Include="CommonFont.h" />
     <ClInclude Include="CommonMesh.h" />
     <ClInclude Include="D3DHelpers.h" />
+    <ClInclude Include="StringUtils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F7AFE374-3C54-40F7-B52C-13FC8877B478}</ProjectGuid>

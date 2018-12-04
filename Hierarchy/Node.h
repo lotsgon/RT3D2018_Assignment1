@@ -11,6 +11,7 @@
 //*********************************************************************************************
 
 #include "Application.h"
+#include "Animation.h"
 
 __declspec(align(16)) class Node
 {
@@ -45,6 +46,9 @@ protected:
 	XMFLOAT4 m_v4LocalPosition; // Local position
 	XMFLOAT4 m_v4LocalScale = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f); // Local scale
 
+	std::vector<Animation> m_vAnimations;
+	int m_fCurrentAnimation;
+
 	XMVECTOR m_vForwardVector; // Forward Vector for Node
 
 	XMMATRIX m_mLocalMatrix; // Local transformation matrix
@@ -72,8 +76,10 @@ public:
 	float GetXRotation(void) { return m_v4LocalRotation.x; }
 	float GetYRotation(void) { return m_v4LocalRotation.y; }
 	float GetZRotation(void) { return m_v4LocalRotation.z; }
+	float IsRoot(void) { return m_bIsRoot; }
 	std::string GetName(void) { return m_name; }
 	std::string GetGameObjectName(void) { return m_gameObjectName; }
+	std::vector<Node*> GetChildren(void) { return m_children; }
 	XMFLOAT4 GetFocusPosition(void) { return GetLocalPosition(); }
 	XMFLOAT4 GetCameraPosition(void)
 	{
@@ -100,6 +106,29 @@ public:
 	void UpdateXRotation(float f) { m_v4LocalRotation.x += f; }
 	void UpdateYRotation(float f) { m_v4LocalRotation.y += f; }
 	void UpdateZRotation(float f) { m_v4LocalRotation.z += f; }
+	void AddAnimation(Animation animation) { m_vAnimations.push_back(animation); }
+	void SetCurrentAnimation(int index) 
+	{
+		m_fCurrentAnimation = index;
+
+		for (Node* child : m_children)
+		{
+			child->SetCurrentAnimation(index);
+		}
+	}
+
+	void SetDebugAnimation(bool value)
+	{
+		for (Animation anim : m_vAnimations)
+		{
+			anim.SetDebugTime(value);
+		}
+
+		for (Node* child : m_children)
+		{
+			child->SetDebugAnimation(value);
+		}
+	}
 
 	void* operator new(size_t i)
 	{
